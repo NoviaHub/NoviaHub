@@ -1,440 +1,374 @@
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
-local Window = Rayfield:CreateWindow({
-    Name = "Da Hood",
-    LoadingTitle = "Novia Hub",
-    LoadingSubtitle = "by Karma, Kai",
-    ConfigurationSaving = {
-       Enabled = false,
-       FolderName = nil, -- Create a custom folder for your hub/game
-       FileName = "Novia"
-    },
-    Discord = {
-       Enabled = false,
-       Invite = ".gg/hXjKvqgczf", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD
-       RememberJoins = true -- Set this to false to make them join the discord every time they load it up
-    },
-    KeySystem = true, -- Set this to true to use our key system
-    KeySettings = {
-       Title = "Novia Hub | Key",
-       Subtitle = "Link in Discord Server.",
-       Note = "Join Server From Misc Tab.",
-       FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
-       SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
-       GrabKeyFromSite = true, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-       Key = {"https://pastebin.com/raw/MR44aenM"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
-    }
- })
+local DTBId = {
+	[4154461609] = true,
+}
 
- local MainTab = Window:CreateTab("Home", 14113273116) -- Title, Image
- local MainSection = MainTab:CreateSection("Main")
+local FearId = {
+	[4188829649] = true,
+}
 
- Rayfield:Notify({
-    Title = "Thank You For Executing Novia Hub",
-    Content = "Make sure to join our discord server for more informations.",
-    Duration = 1,
-    Image = 14114976100,
-    Actions = { -- Notification Buttons
-       Ignore = {
-          Name = "Okay!",
-          Callback = function()
-          print("The user tapped Okay!")
-       end
-    },
- },
- })
+local ThugId = {
+	[73060874] = true,
+}
 
- local Button = MainTab:CreateButton({
-    Name = "Infinite Jump",
-    Callback = function()
-        _G.infinjump = true
- 
-local Player = game:GetService("Players").LocalPlayer
-local Mouse = Player:GetMouse()
-Mouse.KeyDown:connect(function(k)
-if _G.infinjump then
-if k:byte() == 32 then
-Humanoid = game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-Humanoid:ChangeState("Jumping")
-wait(0.1)
-Humanoid:ChangeState("Seated")
-end
-end
-end)
- 
-local Player = game:GetService("Players").LocalPlayer
-local Mouse = Player:GetMouse()
-Mouse.KeyDown:connect(function(k)
-k = k:lower()
-if k == "r" then
-if _G.infinjump == true then
-_G.infinjump = false
-else
-_G.infinjump = true
-end
-end
-end)
-    end,
- })
+local StarId = {
+	[2379016932] = true,
+}
 
- local Button = MainTab:CreateButton({
-    Name = "Fly",
-    Callback = function()
-        plr = game.Players.LocalPlayer
-        local mouse = plr:GetMouse()
-         
-                localplayer = plr
-         
-                if workspace:FindFirstChild("Core") then
-                    workspace.Core:Destroy()
-                end
-         
-                local Core = Instance.new("Part")
-                Core.Name = "Core"
-                Core.Size = Vector3.new(0.05, 0.05, 0.05)
-         
-                spawn(function()
-                    Core.Parent = workspace
-                    local Weld = Instance.new("Weld", Core)
-                    Weld.Part0 = Core
-                    Weld.Part1 = localplayer.Character.LowerTorso
-                    Weld.C0 = CFrame.new(0, 0, 0)
-                end)
-         
-                workspace:WaitForChild("Core")
-         
-                local torso = workspace.Core
-                flying = true
-                local speed=10
-                local keys={a=false,d=false,w=false,s=false} 
-                local e1
-                local e2
-                local function start()
-                    local pos = Instance.new("BodyPosition",torso)
-                    local gyro = Instance.new("BodyGyro",torso)
-                    pos.Name="EPIXPOS"
-                    pos.maxForce = Vector3.new(math.huge, math.huge, math.huge)
-                    pos.position = torso.Position
-                    gyro.maxTorque = Vector3.new(9e9, 9e9, 9e9) 
-                    gyro.cframe = torso.CFrame
-                    repeat
-                        wait()
-                        localplayer.Character.Humanoid.PlatformStand=true
-                        local new=gyro.cframe - gyro.cframe.p + pos.position
-                        if not keys.w and not keys.s and not keys.a and not keys.d then
-                            speed=5
-                        end
-                        if keys.w then 
-                            new = new + workspace.CurrentCamera.CoordinateFrame.lookVector * speed
-                            speed=speed+0
-                        end
-                        if keys.s then 
-                            new = new - workspace.CurrentCamera.CoordinateFrame.lookVector * speed
-                            speed=speed+0
-                        end
-                        if keys.d then 
-                            new = new * CFrame.new(speed,0,0)
-                            speed=speed+0
-                        end
-                        if keys.a then 
-                            new = new * CFrame.new(-speed,0,0)
-                            speed=speed+0
-                        end
-                        if speed>10 then
-                            speed=5
-                        end
-                        pos.position=new.p
-                        if keys.w then
-                            gyro.cframe = workspace.CurrentCamera.CoordinateFrame*CFrame.Angles(-math.rad(speed*0),0,0)
-                        elseif keys.s then
-                            gyro.cframe = workspace.CurrentCamera.CoordinateFrame*CFrame.Angles(math.rad(speed*0),0,0)
-                        else
-                            gyro.cframe = workspace.CurrentCamera.CoordinateFrame
-                        end
-                    until flying == false
-                    if gyro then gyro:Destroy() end
-                    if pos then pos:Destroy() end
-                    flying=false
-                    localplayer.Character.Humanoid.PlatformStand=false
-                    speed=10
-                end
-                e1=mouse.KeyDown:connect(function(key)
-                    if not torso or not torso.Parent then flying=false e1:disconnect() e2:disconnect() return end
-                    if key=="w" then
-                        keys.w=true
-                    elseif key=="s" then
-                        keys.s=true
-                    elseif key=="a" then
-                        keys.a=true
-                    elseif key=="d" then
-                        keys.d=true
-                    elseif key=="x" then
-                        if flying==true then
-                            flying=false
-                        else
-                            flying=true
-                            start()
-                        end
-                    end
-                end)
-                e2=mouse.KeyUp:connect(function(key)
-                    if key=="w" then
-                        keys.w=false
-                    elseif key=="s" then
-                        keys.s=false
-                    elseif key=="a" then
-                        keys.a=false
-                    elseif key=="d" then
-                        keys.d=false
-                    end
-                end)
-                start()
-    end,
- })
+local SkidId = {
+    [2366275496] = true,
+    [1089945491] = true,
+    [2762707262] = true,
+    [2978449959] = true,
+}
 
- local Button = MainTab:CreateButton({
-    Name = "AimLock (E)",
-    Callback = function()
-        -- Toggle
-getgenv().Target = true
+local DiamondId = {
+	[1252261719] = true,
+    [1376401709] = true,
+}
 
--- Configuration
-getgenv().Key = Enum.KeyCode.E
-getgenv().Prediction = 0.178
-getgenv().ChatMode = false
-getgenv().NotifMode = true
-    getgenv().PartMode = true
-    getgenv().AirshotFunccc = false
-    getgenv().Partz = "Head"
-getgenv().AutoPrediction = true
-getgenv().Fov = 100
-getgenv().Circle = true
---
-    _G.Types = {
-        Ball = Enum.PartType.Ball,
-        Block = Enum.PartType.Block, 
-        Cylinder = Enum.PartType.Cylinder
-    }
-    
-    --variables                 
-    	local Tracer = Instance.new("Part", game.Workspace)
-    Tracer.Name = "gay"	
-    Tracer.Anchored = true		
-    Tracer.CanCollide = false
-    Tracer.Transparency = 0.5
-    Tracer.Parent = game.Workspace	
-    Tracer.Shape = _G.Types.Block
-    Tracer.Size = Vector3.new(10,10,10)
-    Tracer.Color = Color3.fromRGB(74, 65, 42)
-    
-    --
-    local plr = game.Players.LocalPlayer
-local mouse = plr:GetMouse()
-local Runserv = game:GetService("RunService")
+local EnemyId = {
+	[2385120614] = true,
+	[341543646] = true,
+	[221000067] = true,
+	[2775350356] = true,
+	[2262338064] = true,
+	[1405753627] = true,
+	[2438906958] = true,
+	[83636696] = true,
+	[544194523] = true,
+	[3487771668] = true,
+	[3446088891] = true,
+	[3342164038] = true,
+	[1867144219] = true,
+	[97556504] = true,
+	[3384127227] = true,
+	[267399500] = true,
+	[91786132] = true,
+	[2403843244] = true,
+	[949283418] = true,
+	[134675472] = true,
+	[960776236] = true,
+	[3086787709] = true,
+	[367166420] = true,
+	[1692101910] = true,
+	[4864500] = true,
+	[3386849890] = true,
+	[453122426] = true,
+	[20462347] = true,
+	[1410800040] = true,
+	[3202577121] = true,
+	[2571188236] = true,
+	[328843502] = true,
+	[3278461981] = true,
+	[342688725] = true,
+	[1468590384] = true,
+	[682509240] = true,
+	[121465084] = true,
+	[1633086711] = true,
+	[2040114056] = true,
+	[471745960] = true,
+	[3434100337] = true,
+	[1411408725] = true,
+	[2359361491] = true,
+	[174868032] = true,
+	[1335230271] = true,
+	[3540161587] = true,
+	[888698208] = true,
+	[3243432953] = true,
+	[2009234256] = true,
+	[2683624084] = true,
+	[2506628287] = true,
+	[3399528770] = true,
+	[2617374443] = true,
+	[996445564] = true,
+	[1746488161] = true,
+	[3601455027] = true,
+	[1611783674] = true,
+	[3112820013] = true,
+	[1242560578] = true,
+	[3086496765] = true,
+	[68263260] = true,
+	[2218216231] = true,
+	[3127146856] = true,
+	[528881291] = true,
+	[530538182] = true,
+	[45814659] = true,
+	[1544533393] = true,
+	[3472680787] = true,
+	[685094860] = true,
+	[80213825] = true,
+	[3107486900] = true,
+	[3167418005] = true,
+	[1765862094] = true,
+	[1070548281] = true,
+	[1602770474] = true,
+	[1414587548] = true,
+	[2237528420] = true,
+	[1328825753] = true,
+	[36566543] = true,
+	[168126690] = true,
+	[2445234227] = true,
+	[1312182760] = true,
+	[3494819300] = true,
+	[2495545290] = true,
+	[883935220] = true,
+	[1462038194] = true,
+	[2412399592] = true,
+	[1140510815] = true,
+	[2381828282] = true,
+	[2319619105] = true,
+	[3451841811] = true,
+	[857874877] = true,
+	[2665259] = true,
+	[60935213] = true,
+	[530191889] = true,
+	[1628316979] = true,
+	[218371205] = true,
+	[2788184005] = true,
+	[3207880708] = true,
+	[2932921962] = true,
+	[273745938] = true,
+	[244902112] = true,
+	[1717819433] = true,
+	[1274852399] = true,
+	[109202930] = true,
+	[3413719745] = true,
+	[3376845876] = true,
+	[2551611755] = true,
+	[2832101336] = true,
+	[3053730650] = true,
+	[1058942985] = true,
+	[3233223400] = true,
+	[2594137875] = true,
+	[140135317] = true,
+	[1937059486] = true,
+	[244331908] = true,
+	[3360782059] = true,
+	[1266167773] = true,
+	[3360799567] = true,
+	[554156590] = true,
+	[79287609] = true,
+	[1786232937] = true,
+	[2512185196] = true,
+	[62639400] = true,
+	[2411740048] = true,
+	[154220234] = true,
+	[2820724269] = true,
+	[1084932595] = true,
+	[490432634] = true,
+	[106067330] = true,
+	[3265710420] = true,
+	[1615343984] = true,
+	[1277602974] = true,
+	[988783311] = true,
+	[2530699406] = true,
+	[1009221814] = true,
+	[3454912230] = true,
+	[315693697] = true,
+	[1547314554] = true,
+	[3140798308] = true,
+	[140573843] = true,
+	[512687855] = true,
+	[1593266270] = true,
+	[723769846] = true,
+	[113080976] = true,
+	[3053468015] = true,
+	[2559076921] = true,
+	[3433205254] = true,
+	[2351021062] = true,
+	[3426663599] = true,
+	[2411807466] = true,
+	[2064677982] = true,
+	[2497869704] = true,
+	[1511465503] = true,
+	[2432531355] = true,
+	[516773317] = true,
+	[2428985663] = true,
+	[145153137] = true,
+	[529565492] = true,
+	[2267519533] = true,
+	[433997337] = true,
+	[1779575445] = true,
+	[260592314] = true,
+	[51630407] = true,
+	[551308151] = true,
+	[3311642098] = true,
+	[2792353533] = true,
+	[2438649895] = true,
+	[14838201] = true,
+	[1227962198] = true,
+	[3227732795] = true,
+	[2309457259] = true,
+	[1840257900] = true,
+	[1796663810] = true,
+	[2049945401] = true,
+	[1253331732] = true,
+	[3366161544] = true,
+	[122697165] = true,
+	[606041098] = true,
+	[2647702356] = true,
+	[2806946180] = true,
+	[1812852714] = true,
+	[1473176319] = true,
+	[73420929] = true,
+	[1225521787] = true,
+	[3332574468] = true,
+	[2345506493] = true,
+	[3246660830] = true,
+	[439282250] = true,
+	[3184748724] = true,
+	[94328598] = true,
+	[2047463614] = true,
+	[843956343] = true,
+	[918939004] = true,
+	[1532808282] = true,
+	[2544695796] = true,
+	[2246732664] = true,
+	[3166770] = true,
+	[2428136673] = true,
+	[2668438061] = true,
+	[1611434354] = true,
+	[1812919636] = true,
+	[1688589423] = true,
+	[58334809] = true,
+	[3180590326] = true,
+	[31467345] = true,
+	[1541594437] = true,
+	[3408167871] = true,
+	[3104697328] = true,
+	[2320562376] = true,
+	[2474125946] = true,
+	[3477168507] = true,
+	[119155790] = true,
+	[2497427553] = true,
+	[1694560377] = true,
+	[3408509457] = true,
+	[2028184805] = true,
+	[2623381231] = true,
+	[478777] = true,
+	[2427047739] = true,
+	[1552193951] = true,
+	[2769662103] = true,
+	[2446098676] = true,
+	[3071372583] = true,
+	[2385850270] = true,
+	[3133107789] = true,
+	[2821000320] = true,
+	[977115426] = true,
+	[2531755962] = true,
+	[2661379124] = true,
+	[1919835164] = true,
+	[3320132819] = true,
+	[293036178] = true,
+	[3174968924] = true,
+	[340705194] = true,
+	[1170138060] = true,
+	[1586704123] = true,
+	[3443727509] = true,
+	[586098829] = true,
+	[3166683644] = true,
+	[153542023] = true,
+	[135021150] = true,
+	[479546802] = true,
+	[298866861] = true,
+	[1481297767] = true,
+	[382013092] = true,
+	[607924934] = true,
+	[356164182] = true,
+	[546512748] = true,
+	[3236769493] = true,
+	[1465175253] = true,
+	[1332866176] = true,
+	[2522365474] = true,
+	[84084627] = true,
+	[338135727] = true,
+	[2825375341] = true,
+	[8301349] = true,
+	[2631031357] = true,
+	[1043434684] = true,
+	[129557982] = true,
+	[3479276948] = true,
+	[683274066] = true,
+	[3395398263] = true,
+	[2302262279] = true,
+	[2846189189] = true,
+	[550053145] = true,
+	[462108732] = true,
+	[2794160137] = true,
+	[910405271] = true,
+	[1969510238] = true,
+	[264123041] = true,
+	[265598055] = true,
+	[533365905] = true,
+	[2275879529] = true,
+	[2294188446] = true,
+	[495699690] = true,
+	[2912721956] = true,
+	[958004396] = true,
+	[1697584206] = true,
+	[2505265155] = true,
+	[483721696] = true,
+	[134337262] = true,
+	[122879189] = true,
+	[2411552526] = true,
+	[3344476890] = true,
+	[1713873272] = true,
+	[3499156945] = true,
+} 
 
-circle = Drawing.new("Circle")
-circle.Color = Color3.fromRGB(25,25,25)
-circle.Thickness = 0
-circle.NumSides = 732
-circle.Radius = getgenv().Fov
-circle.Thickness = 0
-circle.Transparency = 0
-circle.Visible = getgenv().Circle
-circle.Filled = false
-
-Runserv.RenderStepped:Connect(function()
-    circle.Position = Vector2.new(mouse.X,mouse.Y+35)
-    if getgenv().AirshotFunccc == true then
-            if Plr ~= nil then else return; end
-            if Plr.Character.Humanoid.Jump == true and Plr.Character.Humanoid.FloorMaterial == Enum.Material.Air then
-                getgenv().Partz = "RightFoot"
-            else
-                Plr.Character:WaitForChild("Humanoid").StateChanged:Connect(function(old,new)
-                    if new == Enum.HumanoidStateType.Freefall then
-                    getgenv().Partz = "RightFoot"
-                    else
-                        getgenv().Partz = "HumanoidRootPart"
-                    end
-                end)
-            end
-end
-end)
-    
-    	local guimain = Instance.new("Folder", game.CoreGui)
-    	local CC = game:GetService"Workspace".CurrentCamera
-    local LocalMouse = game.Players.LocalPlayer:GetMouse()
-    	local Locking = false
-    
-    	
-    --
-    if getgenv().valiansh == true then
-                        game.StarterGui:SetCore("SendNotification", {
-                   Title = "Locked",
-                   Text = "already loaded",
-                   Duration = 5
-        
-                   })
-        return
-    end
-    
-    getgenv().valiansh = true
-    
-        local UserInputService = game:GetService("UserInputService")
-
-    UserInputService.InputBegan:Connect(function(keygo,ok)
-           if (not ok) then
-           if (keygo.KeyCode == getgenv().Key) then
-               if getgenv().Target == true then
-               Locking = not Locking
-               
-               if Locking then
-               Plr =  getClosestPlayerToCursor()
-                if getgenv().ChatMode then
-        local A_1 = "Target: "..tostring(Plr.Character.Humanoid.DisplayName) local A_2 = "All" local Event = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest Event:FireServer(A_1, A_2) 
-        	end	
-               if getgenv().NotifMode then
-    			game.StarterGui:SetCore("SendNotification", {
-        Title = "ugliest lock";
-        Text = "Target: "..tostring(Plr.Character.Humanoid.DisplayName);
-    
-    })
-    end
-    elseif not Locking then
-         if getgenv().ChatMode then
-        local A_1 = "Unlocked!" local A_2 = "All" local Event = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest Event:FireServer(A_1, A_2) 
-        	end	
-        if getgenv().NotifMode then
-                        game.StarterGui:SetCore("SendNotification", {
-                   Title = "Unlock",
-                   Text = "unlocked",
-                   Duration = 5
-               })
-           elseif getgenv().Target == false then
-                        game.StarterGui:SetCore("SendNotification", {
-                   Title = ":D",
-                   Text = "target left or died",
-                   Duration = 5
-     
-                   })
-               
-               end
-                  
- 
- end     end   
-end
-end
-end)
-	
-	function getClosestPlayerToCursor()
-		local closestPlayer
-		local shortestDistance = circle.Radius
-
-		for i, v in pairs(game.Players:GetPlayers()) do
-			if v ~= game.Players.LocalPlayer and v.Character and v.Character:FindFirstChild("Humanoid") and v.Character.Humanoid.Health ~= 0 and v.Character:FindFirstChild("LowerTorso") then
-				local pos = CC:WorldToViewportPoint(v.Character.PrimaryPart.Position)
-				local magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(LocalMouse.X, LocalMouse.Y)).magnitude
-				if magnitude < shortestDistance then
-					closestPlayer = v
-					shortestDistance = magnitude
+function premium()
+	for _,v in pairs(game:GetService('Players'):GetChildren()) do
+		if StarId[v.UserId] then
+			if v.Character then
+				if v.Character.Parent.Name == 'Players' then
+					v.Character:FindFirstChildWhichIsA('Humanoid').DisplayName = ('[⭐]'..v.DisplayName)
+				end
+			end
+		elseif SkidId[v.UserId] then
+			if v.Character then
+				if v.Character.Parent.Name == 'Players' then
+					v.Character:FindFirstChildWhichIsA('Humanoid').DisplayName = ('[💀SKID💀]'..v.DisplayName)
+				end
+			end
+        elseif ThugId[v.UserId] then
+			if v.Character then
+				if v.Character.Parent.Name == 'Players' then
+					v.Character:FindFirstChildWhichIsA('Humanoid').DisplayName = ('[😎THUGHUNTER😎]'..v.DisplayName)
+				end
+			end
+	elseif EgoId[v.UserId] then
+			if v.Character then
+				if v.Character.Parent.Name == 'Players' then
+					v.Character:FindFirstChildWhichIsA('Humanoid').DisplayName = ('[🔥child molester🔥]'..v.DisplayName)
+				end
+			end
+        elseif fedId[v.UserId] then
+			if v.Character then
+				if v.Character.Parent.Name == 'Players' then
+					v.Character:FindFirstChildWhichIsA('Humanoid').DisplayName = ('[⚧fed⚧]'..v.DisplayName)
+				end
+			end
+		elseif DiamondId[v.UserId] then
+			if v.Character then
+				if v.Character.Parent.Name == 'Players' then
+					v.Character:FindFirstChildWhichIsA('Humanoid').DisplayName = ('[💎Sluxon ADMIN💎]'..v.DisplayName)
+				end
+			end
+		elseif EnemyId[v.UserId] then
+			if v.Character then
+				if v.Character.Parent.Name == 'Players' then
+					v.Character:FindFirstChildWhichIsA('Humanoid').DisplayName = ('🤡 RAYX Premium User 🤡')
+				end
+			end
+		elseif v.Character then
+			if v.Character.Parent.Name == 'Players' then
+				if not v.Character.UpperTorso:FindFirstChild('BodyBackAttachment') then
+					v.Character:FindFirstChildWhichIsA('Humanoid').DisplayName = ('[🙂]'..v.DisplayName)
 				end
 			end
 		end
-		return closestPlayer
 	end
---
-if getgenv().PartMode then
-	game:GetService"RunService".Stepped:connect(function()
-		if Locking and Plr.Character and Plr.Character:FindFirstChild("LowerTorso") then
-			Tracer.CFrame = CFrame.new(Plr.Character.LowerTorso.Position+(Plr.Character.LowerTorso.Velocity*Prediction))
-		else
-			Tracer.CFrame = CFrame.new(0, 9999, 0)
-		end
-	end)
 end
-
-    
-    
-    --
-	local rawmetatable = getrawmetatable(game)
-	local old = rawmetatable.__namecall
-	setreadonly(rawmetatable, false)
-	rawmetatable.__namecall = newcclosure(function(...)
-		local args = {...}
-		if Locking and getnamecallmethod() == "FireServer" and args[2] == "UpdateMousePos" then
-			args[3] = Plr.Character[getgenv().Partz].Position+(Plr.Character[getgenv().Partz].Velocity*Prediction)
-			return old(unpack(args))
-		end
-		return old(...)
-	end)
----
-	while wait() do
-	if getgenv().AutoPrediction == true then
-        local pingvalue = game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString()
-        local split = string.split(pingvalue,'(')
-        local ping = tonumber(split[1])
-        if ping < 130 then
-            getgenv().Prediction = 0.151
-        elseif ping < 125 then
-            getgenv().Prediction = 0.149
-        elseif ping < 110 then
-            getgenv().Prediction = 0.140
-        elseif ping < 105 then
-            getgenv().Prediction = 0.133
-        elseif ping < 90 then
-            getgenv().Prediction = 0.130
-        elseif ping < 80 then
-            getgenv().Prediction = 0.128
-        elseif ping < 70 then
-            getgenv().Prediction = 0.1230
-        elseif ping < 60 then
-            getgenv().Prediction = 0.1229
-        elseif ping < 50 then
-            getgenv().Prediction = 0.1225
-        elseif ping < 40 then
-            getgenv().Prediction = 0.1256
-        end
-	end
-    end
-    end,
- })
-
- local Slider = MainTab:CreateSlider({
-    Name = "WalkSpeed",
-    Range = {0, 500},
-    Increment = 1,
-    Suffix = "Speed",
-    CurrentValue = 16,
-    Flag = "Slider1", 
-    Callback = function(Value)
-        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = (Value)
-    end,
- })
-
- local PlayerTab = Window:CreateTab("Player", 14113273116) -- Title, Image
- local Button = PlayerTab:CreateButton({
-    Name = "Headless",
-    Callback = function()
-        game.Players.LocalPlayer.Character.Head.Transparency = 1
- game.Players.LocalPlayer.Character.Head.Transparency = 1
- for i,v in pairs(game.Players.LocalPlayer.Character.Head:GetChildren()) do
- if (v:IsA("Decal")) then
- v.Transparency = 1
-   end
- end
-
-    end,
- })
-
- local Button = PlayerTab:CreateButton({
-    Name = "Korblox",
-    Callback = function()
-        local ply = game.Players.LocalPlayer
-local chr = ply.Character
-chr.RightLowerLeg.MeshId = "902942093"
-chr.RightLowerLeg.Transparency = "1"
-chr.RightUpperLeg.MeshId = "http://www.roblox.com/asset/?id=902942096"
-chr.RightUpperLeg.TextureID = "http://roblox.com/asset/?id=902843398"
-chr.RightFoot.MeshId = "902942089"
-chr.RightFoot.Transparency = "1"
-    end,
- })
+local success,err = pcall(premium)
+return StarId
